@@ -23,5 +23,7 @@
         - Nestarga daxldor jami Schema Modellarni tashkillaymiz va Enumlarni birga hosil etamiz
 =========================================================================
         99 => 
-        - 
+        - Loyihamizning Components Module tizimi va unga daxldor bolgan Member Module tizimi haqida mushoxada etamiz
+        - Memberlarimizga daxidor bolgan Member Resolverni tashkil qilamiz
+        - Memberlarimizga daxldor Member Service Model va Member Schema Modelni tashkil etamiz
 */
