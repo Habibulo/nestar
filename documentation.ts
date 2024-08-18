@@ -20,7 +20,7 @@
         98 => 
         - Nestar loyihamiz uchun yangi databaseni Clusterdan hosil etamiz
         - Loyihamizning databasega ulanishni amalga oshiramiz
-        - Nestarga daxidor jami Schema Modellarni tashkillaymiz va Enamlarni birga hosil etamiz
+        - Nestarga daxldor jami Schema Modellarni tashkillaymiz va Enumlarni birga hosil etamiz
 =========================================================================
         99 => 
         - 
