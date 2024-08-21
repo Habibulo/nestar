@@ -1,19 +1,17 @@
 /*
-  ZK-TASK:
-    Shunday function yozing, u har soniyada bir marta consolega 
-    1 dan 5 gacha bolgan raqamlarni chop etsin va 
-    5 soniyadan keyin ishini toxtatsin.
-    MASALAN: printNumbers()*/
-function printNumbers(): void {
-    let number = 1;
-    const intervalId = setInterval(() => {
-        console.log(number);
-        if (number === 5) {
-            clearInterval(intervalId); // Intervalni to'xtatish
-        } else {
-            number++; // Sonni oshirish
-        }
-    }, 1000); // 1000 millisekund = 1 soniya
+  ZL-TASK:
+    Shunday function yozing, u parametrda berilgan stringni 
+    kebab casega otkazib qaytarsin. Bosh harflarni 
+    kichik harflarga ham otkazsin.
+    MASALAN: stringToKebab(“I love Kebab”) return “i-love-kebab”
+*/
+function stringToKebab(str: string): string {
+    return str
+        .replace(/([a-z])([A-Z])/g, '$1-$2') // Insert a hyphen between lowercase and uppercase letters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .toLowerCase(); // Convert the entire string to lowercase
 }
 
-printNumbers();
+// Example usage:
+console.log(stringToKebab("I love Kebab")); // Output: "i-love-kebab"
+
