@@ -12,7 +12,9 @@ export enum Message {
     WRONG_PASSWORD = "Wrong password",
     TOKEN_CREATION_FAILED = "Token creation error",
 
-    NO_MEMBER_NICK = "No macher with that member nick!",
+    
+	USED_MEMBER_NICK_OR_PHONE = 'Already used member nick or phone!',
+    NO_MEMBER_NICK = "No machtches with that member nick!",
     BLOCKED_USER = "You have been blocked!",
     NOT_AUTHENTICATED = 'You are not authenticated, please login first!',
     TOKEN_NOT_EXIST = 'Bearer Token is not provided!',
