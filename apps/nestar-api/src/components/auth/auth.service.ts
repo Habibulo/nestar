@@ -21,7 +21,7 @@ export class AuthService {
         payload[`${ele}`] = member[`${ele}`]
     })
     delete payload.memberPassword;
-    console.log("payload", payload);
+    // console.log("payload", payload);
     return await this.jwtService.signAsync(payload)
   }
   public async verifyToken(token: string): Promise<Member> {

@@ -19,10 +19,9 @@ export class MemberService {
 			const result = await this.memberModel.create(input);
 			// result.memberPassword = ""
 			// delete result.memberPassword
-			console.log("database dan qaytgan result:", result);
-			
-			//TODO: Auth via Token
+		//TODO: Auth via Token
 			result.accessToken = await this.authService.createToken(result)
+			result.memberPassword = ""
 			return result;
 		} catch (err) {
 			console.log('Error, Servise.model:', err.message);
@@ -53,5 +52,13 @@ export class MemberService {
 
 	public async getMember(): Promise<string> {
 		return 'getMember executed!';
+	}
+
+	public async getAllMembersByAdmin(): Promise<string> {
+		return 'getAllMembersByAdmin executed!';
+	}
+
+	public async updateMembersByAdmin(): Promise<string> {
+		return 'updateMembersByAdmin executed!';
 	}
 }
