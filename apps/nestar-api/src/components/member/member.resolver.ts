@@ -11,6 +11,7 @@ import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
 import { MemberUpdate } from '../../libs/dto/member/member.update';
 import { shapeIntoMongoObjectId } from '../../libs/config';
+import { WithoutGuard } from '../auth/guards/without.guard';
 
 @Resolver()
 export class MemberResolver {
@@ -53,11 +54,13 @@ export class MemberResolver {
 		delete input._id 
 		return this.memberService.updateMember(memberId, input);
 	}
+	@UseGuards(WithoutGuard)
 	@Query(() => Member)
-	public async getMember(@Args("memberId") input: String): Promise<Member> {
+	public async getMember(@Args("memberId") input: string, @AuthMember("_id") memberId: ObjectId): Promise<Member> {
 		console.log('Query: getMember');
+		console.log('Query: getMember memberId', memberId);
 		const targetId: ObjectId = shapeIntoMongoObjectId(input)
-		return this.memberService.getMember(targetId);
+		return this.memberService.getMember(memberId, targetId);
 	}
 	/** ADMIN **/
 	// Authenticated: ADMIN
