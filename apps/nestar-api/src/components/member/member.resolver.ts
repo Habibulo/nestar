@@ -9,10 +9,11 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Resolver()
 export class MemberResolver {
-	constructor(private readonly memberService: MemberService) { }
+	constructor(private readonly memberService: MemberService) {}
 
 	@Mutation(() => Member)
 	public async signup(@Args('input') input: MemberInput): Promise<Member> {
@@ -24,20 +25,13 @@ export class MemberResolver {
 		console.log('Mutation: login');
 		return this.memberService.login(input);
 	}
-	/** Authenticated (user, admin, agent) **/
-	@UseGuards(AuthGuard)
-	@Mutation(() => String)
-	public async updateMember(@AuthMember('_id') memberId: ObjectId):  Promise<string> {
-		console.log('Mutation: updateMember');
-		return this.memberService.updateMember();
-	}
 	/** TEST **/
 	@UseGuards(AuthGuard)
 	@Query(() => String)
 	//AuthMember -> auth bogan memberlar malumotlarini olib beradi
 	public async checkAuth(@AuthMember('memberNick') memberNick: string): Promise<string> {
 		console.log('Mutation: checkAuth');
-		return `His ${memberNick}`;
+		return `This ${memberNick}`;
 	}
 	/** TEST **/
 	@Roles(MemberType.USER, MemberType.AGENT)
@@ -46,7 +40,17 @@ export class MemberResolver {
 	//AuthMember -> auth bogan memberlar malumotlarini olib beradi
 	public async checkAuthRoles(@AuthMember() authMember: Member): Promise<string> {
 		console.log('Query: checkAuthRoles');
-		return `His ${authMember.memberNick}, you are ${authMember.memberType} (memberId: ${authMember._id})`;
+		return `This ${authMember.memberNick}, you are ${authMember.memberType} (memberId: ${authMember._id})`;
+	}
+	/** Authenticated (user, admin, agent) **/
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async updateMember(
+		@Args("input") input: MemberUpdate,
+		@AuthMember('_id') memberId: ObjectId): Promise<Member> {
+		console.log('Mutation: updateMember');
+		delete input._id 
+		return this.memberService.updateMember(memberId, input);
 	}
 	@Query(() => String)
 	public async getMember(): Promise<string> {
@@ -57,8 +61,8 @@ export class MemberResolver {
 	// Authenticated: ADMIN
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
-	@Mutation(()=> String)
-	public async getAllMembersByAdmin(): Promise<string>{
+	@Mutation(() => String)
+	public async getAllMembersByAdmin(): Promise<string> {
 		return this.memberService.getMember();
 	}
 	@Mutation(() => String)
