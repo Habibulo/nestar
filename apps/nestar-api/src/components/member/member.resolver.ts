@@ -10,6 +10,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
 import { MemberUpdate } from '../../libs/dto/member/member.update';
+import { shapeIntoMongoObjectId } from '../../libs/config';
 
 @Resolver()
 export class MemberResolver {
@@ -52,10 +53,11 @@ export class MemberResolver {
 		delete input._id 
 		return this.memberService.updateMember(memberId, input);
 	}
-	@Query(() => String)
-	public async getMember(): Promise<string> {
+	@Query(() => Member)
+	public async getMember(@Args("memberId") input: String): Promise<Member> {
 		console.log('Query: getMember');
-		return this.memberService.getMember();
+		const targetId: ObjectId = shapeIntoMongoObjectId(input)
+		return this.memberService.getMember(targetId);
 	}
 	/** ADMIN **/
 	// Authenticated: ADMIN
@@ -63,11 +65,11 @@ export class MemberResolver {
 	@UseGuards(RolesGuard)
 	@Mutation(() => String)
 	public async getAllMembersByAdmin(): Promise<string> {
-		return this.memberService.getMember();
+		return this.memberService.getAllMembersByAdmin();
 	}
 	@Mutation(() => String)
 	public async updateMemberByAdmin(): Promise<string> {
 		console.log('Mutation: updateMemberByAdmin');
-		return this.memberService.getMember();
+		return this.memberService.updateMembersByAdmin();
 	}
 }
