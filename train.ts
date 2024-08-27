@@ -1,24 +1,32 @@
 /*
-  ZN-TASK:
-    Shunday function yozing, uni array va number parametri bolsin. Ikkinchi 
-    parametrda berilgan raqamli indexgacha arrayni orqasiga ogirib qaytarsin.
-    MASALAN: rotateArray([1, 2, 3, 4, 5, 6], 3) return [5, 6, 1, 2, 3, 4]
+  ZO-TASK:
+    Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda ekanligini 
+    aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
+    MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
 */
-function rotateArray<T>(arr: T[], k: number): T[] {
-  const length = arr.length;
-  if (length === 0) return arr; // If the array is empty, return it as is
+function areParenthesesBalanced(input: string): boolean {
+  let balance = 0;
 
-  // Ensure k is within the bounds of the array length
-  const effectiveK = k % length;
-  if (effectiveK === 0) return arr; // No need to rotate if k is 0 or a multiple of array length
+  for (const char of input) {
+      if (char === '(') {
+          balance++;
+      } else if (char === ')') {
+          balance--;
+      }
 
-  // Split the array and rotate
-  const part1 = arr.slice(0, length - effectiveK);
-  const part2 = arr.slice(length - effectiveK);
-  
-  return [...part2, ...part1];
+      // If balance goes negative, it means there's a closing parenthesis
+      // without a matching opening parenthesis
+      if (balance < 0) {
+          return false;
+      }
+  }
+
+  // If balance is 0, all opening parentheses have matching closing ones
+  return balance === 0;
 }
 
-// Example usage:
-const rotatedArray = rotateArray([1, 2, 3, 4, 5, 6], 3);
-console.log(rotatedArray); // Output: [4, 5, 6, 1, 2, 3]
+// Test cases
+console.log(areParenthesesBalanced("string()ichida(qavslar)soni()balansda")); // true
+console.log(areParenthesesBalanced("string()(ichida(qavslar)soni)(balansda"));// true
+console.log(areParenthesesBalanced("string(ichida(qavslar)soni)balansda"));    // false
+console.log(areParenthesesBalanced("string(ichida(qavslar soni balansda"));   // false
