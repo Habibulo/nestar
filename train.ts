@@ -1,32 +1,36 @@
 /*
-  ZO-TASK:
-    Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda ekanligini 
-    aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
-    MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
+  ZP-TASK:
+    shunday function yozing, u 2 ta array parametr qabul qilsin. 
+    Siz bu ikki arrayning qiymatlari o'xshash bo'lishini(ya'ni, ularning barcha elementlari bir xil bo'lishini) tekshirishingiz kerak.
+    MASALAN: 
+    areArraysEqual([1, 2, 3], [3, 1, 2]) // true
+    areArraysEqual([1, 2, 3], [3, 1, 2, 1]) // true
+    areArraysEqual([1, 2, 3], [4, 1, 2]) // false
+
 */
-function areParenthesesBalanced(input: string): boolean {
-  let balance = 0;
 
-  for (const char of input) {
-      if (char === '(') {
-          balance++;
-      } else if (char === ')') {
-          balance--;
-      }
-
-      // If balance goes negative, it means there's a closing parenthesis
-      // without a matching opening parenthesis
-      if (balance < 0) {
-          return false;
-      }
-  }
-
-  // If balance is 0, all opening parentheses have matching closing ones
-  return balance === 0;
+function areArraysEqual(arr1: number[], arr2: number[]): boolean {
+	const countElements = (arr: number[]): Map<number, number> => {
+		const countMap = new Map<number, number>();
+		for (const num of arr) {
+			countMap.set(num, (countMap.get(num) || 0) + 1);
+		}
+		return countMap;
+	};
+	const map1 = countElements(arr1);
+	const map2 = countElements(arr2);
+	if (map1.size !== map2.size) {
+		return false;
+	}
+	for (const [key, value] of map1) {
+		if (map2.get(key) !== value) {
+			return false;
+		}
+	}
+	return true;
 }
 
-// Test cases
-console.log(areParenthesesBalanced("string()ichida(qavslar)soni()balansda")); // true
-console.log(areParenthesesBalanced("string()(ichida(qavslar)soni)(balansda"));// true
-console.log(areParenthesesBalanced("string(ichida(qavslar)soni)balansda"));    // false
-console.log(areParenthesesBalanced("string(ichida(qavslar soni balansda"));   // false
+// Examples:
+console.log(areArraysEqual([1, 2, 3], [3, 1, 2]));
+console.log(areArraysEqual([1, 2, 3], [3, 1, 2, 1]));
+console.log(areArraysEqual([1, 2, 3], [4, 1, 2]));
