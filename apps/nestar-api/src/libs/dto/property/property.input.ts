@@ -63,6 +63,6 @@ export class PropertyInput {
 	memberId?: ObjectId;
 
 	@IsOptional()
-	@Field(() => Boolean, { nullable: true })
+	@Field(() => Date, { nullable: true })
 	constructedAt?: Date;
 }
