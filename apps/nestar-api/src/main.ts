@@ -11,12 +11,9 @@ async function bootstrap() {
 	app.useGlobalInterceptors(new LoggingInterceptor());
 	//serverga yuklash uchun ruxsat
 	app.enableCors({ origin: true, credentials: true });
-
 	//serverga yuklash limiti
 	app.use(graphqlUploadExpress({ maxFileSize: 15000000, maxFiles: 10 }));
 	app.use('/uploads', express.static('./uploads'));
-  // app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalInterceptors(new LoggingInterceptor());
 	await app.listen(process.env.PORT_API ?? 3000);
 }
 bootstrap();
