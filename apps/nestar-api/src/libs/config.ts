@@ -21,8 +21,8 @@ export const availableOptions = [
 ];
 
 export const availablePropertySorts = [
-	'createAt',
-	'updateAt',
+	'createdAt',
+	'updatedAt',
 	'propertyLikes',
 	'propertyViews',
 	'propertyRank',

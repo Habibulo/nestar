@@ -19,7 +19,7 @@ export enum Message {
 	NOT_AUTHENTICATED = 'You are not authenticated, please login first!',
 	TOKEN_NOT_EXIST = 'Bearer Token is not provided!',
 	ONLY_SPECIFIC_ROLES_ALLOWED = 'Allowed only for members with specific roles',
-	NOT_ALLONED_REQUEST = 'Not Allowed Request!',
+	NOT_ALLOWED_REQUEST = 'Not Allowed Request!',
 	PROVIDE_ALLOWED_FORMAT = 'Please provide jpg, ipeg or png images!',
 	SELF_SUBSCRIPTION_DENIED = 'Self subscription is denied!',
 }
