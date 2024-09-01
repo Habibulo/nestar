@@ -78,4 +78,8 @@ export class PropertyUpdate {
 	@IsOptional()
 	@Field(() => Boolean, { nullable: true })
 	constructedAt?: Date;
+  sort: string;
+	direction: any;
+	page: number;
+	limit: number;
 }
