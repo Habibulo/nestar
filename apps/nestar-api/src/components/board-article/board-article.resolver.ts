@@ -93,3 +93,5 @@ export class BoardArticleResolver {
 		return await this.boardArticleService.removeBoardArticleByAdmin(articleId);
 	}
 }
+
+

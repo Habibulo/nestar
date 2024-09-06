@@ -188,3 +188,5 @@ export class BoardArticleService {
 		return result;
 	}
 }
+
+

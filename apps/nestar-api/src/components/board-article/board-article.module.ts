@@ -23,3 +23,5 @@ import { MemberModule } from '../member/member.module';
 	exports: [BoardArticleService],
 })
 export class BoardArticleModule {}
+
+

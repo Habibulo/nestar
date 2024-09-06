@@ -27,6 +27,7 @@ export class BoardArticleInput {
 	memberId?: ObjectId;
 }
 
+
 @InputType()
 class BAISearch {
 	@IsOptional()

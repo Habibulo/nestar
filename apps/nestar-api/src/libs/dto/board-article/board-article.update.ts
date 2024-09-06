@@ -27,3 +27,4 @@ export class BoardArticleUpdate {
 	@Field(() => String, { nullable: true })
 	articleImage?: string;
 }
+

@@ -55,3 +55,4 @@ export class BoardArticles {
 	@Field(() => [TotalCounter], { nullable: true })
 	metaCounter: TotalCounter[];
 }
+
