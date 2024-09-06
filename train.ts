@@ -1,25 +1,31 @@
 /*
-  ZQ-TASK:
-    Shunday function yozing, u parametridagi array ichida 2 marta 
-    qaytarilgan sonlarni alohida araryda qaytarsin.
-    MASALAN: findDuplicates([1,2,3,4,5,4,3,4]) return [3, 4]
+  ZR-TASK:
+    Shunday function yozing, u parametridagi string ichidagi 
+    raqam va sonlarni sonini sanasin.
+    MASALAN: countNumberAndLetters(“string152%\¥”) 
+    return {number:3, letter:6}
 */
 
-function findDuplicates(array1: number[]): number[] {
-    const counts: { [key: number]: number } = {}; // Object to keep track of number frequencies
-    const result: number[] = [];
+function countNumberAndLetters(input: string): { number: number; letter: number, char: number } {
+	let letterCount = 0;
+	let numberCount = 0;
+    let characterCount = 0;
 
-    // Step 1: Count each number's occurrences
-    array1.forEach(num => {
-        counts[num] = (counts[num] || 0) + 1;
-    });
-
-    // Step 2: Find numbers that appear exactly twice
-    for (const num in counts) {
-        if (counts[num] === 2) {
-            result.push(Number(num));
+	for (let char of input) {
+		if (/[a-zA-Z]/.test(char)) {
+			letterCount++;
+		} else if (/\d/.test(char)) {
+			numberCount++;
+		} else {
+            characterCount++ ;
         }
-    }
+	}
 
-    return result;
+	return {
+		number: numberCount,
+		letter: letterCount,
+        char: characterCount
+	};
 }
+const result = countNumberAndLetters('string152%¥');
+console.log(result); // { number: 3, letter: 6 }
