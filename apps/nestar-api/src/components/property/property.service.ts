@@ -79,7 +79,7 @@ export class PropertyService {
 			memberId: memberId,
 			propertyStatus: PropertyStatus.ACTIVE,
 		};
-		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
+		if (propertyStatus === PropertyStatus.SOLD) {soldAt = moment().toDate(), input.soldAt = moment().toDate()}
 		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
 
 		const result = await this.propertyModel
@@ -179,8 +179,8 @@ export class PropertyService {
 						list: [
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
-							lookupMember,
-							{ $unwind: '$memberData' },
+							lookupMember, // [memberData]
+							{ $unwind: '$memberData' }, // [arrayni yoqotib beradi] => memberData json form ga otadi
 						],
 
 						metaCounter: [{ $count: 'total' }],
@@ -243,6 +243,7 @@ export class PropertyService {
 
 		if (propertyStatus === PropertyStatus.SOLD) {
 			soldAt = moment().toDate();
+			input.soldAt = moment().toDate()
 		} else if (propertyStatus === PropertyStatus.DELETE) {
 			deletedAt = moment().toDate();
 		}
