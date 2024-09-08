@@ -78,6 +78,17 @@ export class MemberResolver {
 		console.log('Query: getAgents');
 		return this.memberService.getAgents(memberId, input);
 	}
+
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async likeTargetMember(
+		@Args('memberId') input: string,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Member> {
+		console.log('Mutation: likeTargetMember');
+		const likeRefId = shapeIntoMongoObjectId(input);
+		return await this.memberService.likeTargetMember(memberId, likeRefId);
+	}
 	/** ADMIN **/
 	// Authenticated: ADMIN
 	@Roles(MemberType.ADMIN)
@@ -161,4 +172,3 @@ export class MemberResolver {
 		return uploadedImages;
 	}
 }
-
