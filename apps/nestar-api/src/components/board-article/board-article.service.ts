@@ -5,7 +5,11 @@ import { Model, ObjectId } from 'mongoose';
 import { BoardArticle, BoardArticles } from '../../libs/dto/board-article/board-article';
 import { MemberService } from '../member/member.service';
 import { ViewService } from '../view/view.service';
-import { AllBoardArticlesInquiry, BoardArticleInput, BoardArticlesInquiry, } from '../../libs/dto/board-article/board-article.input';
+import {
+	AllBoardArticlesInquiry,
+	BoardArticleInput,
+	BoardArticlesInquiry,
+} from '../../libs/dto/board-article/board-article.input';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { BoardArticleStatus } from '../../libs/enums/board-article.enum';
 import { ViewGroup } from '../../libs/enums/view.enum';
@@ -54,8 +58,15 @@ export class BoardArticleService {
 				await this.boardArticleStatsEditor({ _id: articleId, targetKey: 'articleViews', modifier: 1 });
 				targetBoardArticle.articleViews++;
 			}
-		}
 
+			//meLiked
+			const likeInput = {
+				memberId: memberId,
+				likeRefId: articleId,
+				likeGroup: LikeGroup.ARTICLE,
+			};
+			targetBoardArticle.meLiked = await this.likeService.checkLikeExistence(likeInput);
+		}
 		targetBoardArticle.memberData = await this.memberService.getMember(null, targetBoardArticle.memberId);
 		return targetBoardArticle;
 	}
@@ -128,21 +139,25 @@ export class BoardArticleService {
 			.exec();
 	}
 
-
-
-	public async likeTargetBoardArticle(memberId: ObjectId, likeRefId: ObjectId): Promise<BoardArticle>{
-		const target: BoardArticle = await this.boardArticleModel.findOne({ _id: likeRefId, articleStatus: BoardArticleStatus.ACTIVE }).exec();
+	public async likeTargetBoardArticle(memberId: ObjectId, likeRefId: ObjectId): Promise<BoardArticle> {
+		const target: BoardArticle = await this.boardArticleModel
+			.findOne({ _id: likeRefId, articleStatus: BoardArticleStatus.ACTIVE })
+			.exec();
 		if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
 		const input: LikeInput = {
 			memberId: memberId,
 			likeRefId: likeRefId,
-			likeGroup: LikeGroup.ARTICLE
+			likeGroup: LikeGroup.ARTICLE,
 		};
 
 		//Like toggle
 		const modifier: number = await this.likeService.toggleLike(input);
-		const result = await this.boardArticleStatsEditor({_id: likeRefId, targetKey: "articleLikes", modifier: modifier})
+		const result = await this.boardArticleStatsEditor({
+			_id: likeRefId,
+			targetKey: 'articleLikes',
+			modifier: modifier,
+		});
 		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}

@@ -89,6 +89,13 @@ export class MemberService {
 			}
 			//record View
 			// increase View
+			//meLiked
+			const likeInput = {
+				memberId: memberId,
+				likeRefId: targetId,
+				likeGroup: LikeGroup.MEMBER,
+			};
+			targetMember.meLiked = await this.likeService.checkLikeExistence(likeInput);
 		}
 		return targetMember;
 	}
@@ -134,7 +141,6 @@ export class MemberService {
 		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}
-
 
 	/** ADMIN **/
 	public async getAllMembersByAdmin(input: MembersInquiry): Promise<Members> {
@@ -183,6 +189,3 @@ export class MemberService {
 			.exec();
 	}
 }
-
-
-
