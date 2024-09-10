@@ -17,7 +17,7 @@ import { ViewGroup } from '../../libs/enums/view.enum';
 import { ViewService } from '../view/view.service';
 import * as moment from 'moment';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
-import { lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
+import { lookupAuthMemberLiked, lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
@@ -62,7 +62,7 @@ export class PropertyService {
 			const likeInput = {
 				memberId: memberId,
 				likeRefId: propertyId,
-				likeGroup: LikeGroup.PROPERTY
+				likeGroup: LikeGroup.PROPERTY,
 			};
 			targetProperty.meLiked = await this.likeService.checkLikeExistence(likeInput);
 		}
@@ -89,8 +89,9 @@ export class PropertyService {
 			memberId: memberId,
 			propertyStatus: PropertyStatus.ACTIVE,
 		};
-		if (propertyStatus === PropertyStatus.SOLD) {soldAt = moment().toDate(), input.soldAt = moment().toDate()}
-		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
+		if (propertyStatus === PropertyStatus.SOLD) {
+			(soldAt = moment().toDate()), (input.soldAt = moment().toDate());
+		} else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
 
 		const result = await this.propertyModel
 			.findOneAndUpdate(search, input, {
@@ -122,19 +123,22 @@ export class PropertyService {
 				{ $sort: sort },
 				{
 					$facet: {
+						// list nomi bn quyidagilarni search qilib berishi
 						list: [
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
+
+							// meliked
+							lookupAuthMemberLiked(memberId),
+
 							lookupMember,
 							{ $unwind: '$memberData' },
 						],
-
 						metaCounter: [{ $count: 'total' }],
 					},
 				},
 			])
 			.exec();
-
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 		return result[0];
 	}
@@ -203,19 +207,21 @@ export class PropertyService {
 		return result[0];
 	}
 
-	public async likeTargetProperty(memberId: ObjectId, likeRefId: ObjectId): Promise<Property>{
-		const target: Property = await this.propertyModel.findOne({ _id: likeRefId, propertyStatus: PropertyStatus.ACTIVE }).exec();
+	public async likeTargetProperty(memberId: ObjectId, likeRefId: ObjectId): Promise<Property> {
+		const target: Property = await this.propertyModel
+			.findOne({ _id: likeRefId, propertyStatus: PropertyStatus.ACTIVE })
+			.exec();
 		if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
 		const input: LikeInput = {
 			memberId: memberId,
 			likeRefId: likeRefId,
-			likeGroup: LikeGroup.PROPERTY
+			likeGroup: LikeGroup.PROPERTY,
 		};
 
 		//Like toggle
 		const modifier: number = await this.likeService.toggleLike(input);
-		const result = await this.propertyStatsEditor({_id: likeRefId, targetKey: "propertyLikes", modifier: modifier})
+		const result = await this.propertyStatsEditor({ _id: likeRefId, targetKey: 'propertyLikes', modifier: modifier });
 		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}
@@ -269,7 +275,7 @@ export class PropertyService {
 
 		if (propertyStatus === PropertyStatus.SOLD) {
 			soldAt = moment().toDate();
-			input.soldAt = moment().toDate()
+			input.soldAt = moment().toDate();
 		} else if (propertyStatus === PropertyStatus.DELETE) {
 			deletedAt = moment().toDate();
 		}
@@ -304,6 +310,3 @@ export class PropertyService {
 		return result;
 	}
 }
-
-
-
