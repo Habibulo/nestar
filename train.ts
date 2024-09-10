@@ -1,31 +1,18 @@
 /*
-  ZR-TASK:
-    Shunday function yozing, u parametridagi string ichidagi 
-    raqam va sonlarni sonini sanasin.
-    MASALAN: countNumberAndLetters(“string152%\¥”) 
-    return {number:3, letter:6}
+  ZT-TASK:
+	Shunday function yozing, u parametridagi string ichida 1 martadan
+	ortiq qaytarilmagan birinchi harf indeksini qaytarsin.
+	MASALAN: firstUniqueCharIndex(“stamp”) return 0
 */
 
-function countNumberAndLetters(input: string): { number: number; letter: number, char: number } {
-	let letterCount = 0;
-	let numberCount = 0;
-    let characterCount = 0;
-
-	for (let char of input) {
-		if (/[a-zA-Z]/.test(char)) {
-			letterCount++;
-		} else if (/\d/.test(char)) {
-			numberCount++;
-		} else {
-            characterCount++ ;
-        }
+function firstUniqueCharIndex(input: string): number {
+	for (let i = 0; i < input.length; i++) {
+			// Check if the current character's first and last occurrence are the same
+			if (input.indexOf(input[i]) === input.lastIndexOf(input[i])) {
+					return i;  // Return the index of the first unique character
+			}
 	}
-
-	return {
-		number: numberCount,
-		letter: letterCount,
-        char: characterCount
-	};
+	return -1;  // If no unique character exists, return -1
 }
-const result = countNumberAndLetters('string152%¥');
-console.log(result); // { number: 3, letter: 6 }
+console.log(firstUniqueCharIndex("stamp"));  // Output: 0 (The 's' is unique)
+console.log(firstUniqueCharIndex("swiss"));  // Output: 1 (The 'w' is unique)
