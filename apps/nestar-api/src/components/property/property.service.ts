@@ -5,6 +5,7 @@ import { Properties, Property } from '../../libs/dto/property/property';
 import {
 	AgentPropertiesInquiry,
 	AllPropertiesInquiry,
+	OrdinaryInquiry,
 	PropertiesInquiry,
 	PropertyInput,
 } from '../../libs/dto/property/property.input';
@@ -207,6 +208,11 @@ export class PropertyService {
 		return result[0];
 	}
 
+
+	public async getFavorites(memberId: ObjectId, input: OrdinaryInquiry): Promise<Properties>{
+		return await this.likeService.getFavoriteProperties(memberId, input);
+	}
+	
 	public async likeTargetProperty(memberId: ObjectId, likeRefId: ObjectId): Promise<Property> {
 		const target: Property = await this.propertyModel
 			.findOne({ _id: likeRefId, propertyStatus: PropertyStatus.ACTIVE })
