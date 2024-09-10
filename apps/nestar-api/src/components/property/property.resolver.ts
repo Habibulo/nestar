@@ -92,6 +92,17 @@ export class PropertyResolver {
 	}
 
 	@UseGuards(AuthGuard)
+	@Query(() => Properties)
+	public async getVisited(
+		@Args('input') input: OrdinaryInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Properties> {
+		console.log('Query: getVisited');
+
+		return await this.propertyService.getVisited(memberId, input);
+	}
+
+	@UseGuards(AuthGuard)
 	@Mutation(() => Property)
 	public async likeTargetProperty(
 		@Args('propertyId') input: string,
