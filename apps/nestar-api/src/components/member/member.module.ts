@@ -7,7 +7,6 @@ import { AuthModule } from '../auth/auth.module';
 import { ViewModule } from '../view/view.module';
 import { LikeModule } from '../like/like.module';
 import FollowSchema from '../../schemas/Follow.model';
-import { FollowModule } from '../follow/follow.module';
 
 @Module({
 	//MemberSchema - bu object
@@ -19,7 +18,6 @@ import { FollowModule } from '../follow/follow.module';
 		AuthModule,
 		ViewModule,
 		LikeModule,
-		FollowModule,
 	],
 	providers: [MemberResolver, MemberService],
 	exports: [MemberService],
