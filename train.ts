@@ -1,18 +1,34 @@
 /*
-  ZT-TASK:
-	Shunday function yozing, u parametridagi string ichida 1 martadan
-	ortiq qaytarilmagan birinchi harf indeksini qaytarsin.
-	MASALAN: firstUniqueCharIndex(“stamp”) return 0
-*/
+  2024-09-13
+	MIT 14
+	TASK ZU:
+		Shunday function yozing, va bu function parametr sifatida
+		raqamlardan iborat array'ni qabul qilsin. Function'ning vazifasi,
+		berilgan parametr array tarkibida takrorlanmagan raqamlarni topib
+		ularni yig'indisini qaytarsin.
 
-function firstUniqueCharIndex(input: string): number {
-	for (let i = 0; i < input.length; i++) {
-			// Check if the current character's first and last occurrence are the same
-			if (input.indexOf(input[i]) === input.lastIndexOf(input[i])) {
-					return i;  // Return the index of the first unique character
+		MASALAN: sumOfUnique([1,2,3,2]); return 4;
+
+		Yuqoridagi misolda, argument sifatida pass qilinayotgan array
+		tarkibida bir marotabadan ortiq takrorlanmagan raqamlar, bular '1', '3'.
+		Va natija sifatida yig'indi 4'ga teng.
+*/
+function sumOfUnique(arr: number[]): number {
+	const frequency: { [key: number]: number } = {};
+
+	// Har bir raqamni hisoblaymiz
+	arr.forEach(num => {
+			frequency[num] = (frequency[num] || 0) + 1;
+	});
+
+	// Takrorlanmagan raqamlarni yig'indisini hisoblaymiz
+	return arr.reduce((sum, num) => {
+			if (frequency[num] === 1) {
+					return sum + num;
 			}
-	}
-	return -1;  // If no unique character exists, return -1
+			return sum;
+	}, 0);
 }
-console.log(firstUniqueCharIndex("stamp"));  // Output: 0 (The 's' is unique)
-console.log(firstUniqueCharIndex("swiss"));  // Output: 1 (The 'w' is unique)
+
+// Misol
+console.log(sumOfUnique([1, 2, 3, 2])); // return 4
